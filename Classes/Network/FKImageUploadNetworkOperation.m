@@ -15,6 +15,7 @@
 
 @interface FKImageUploadNetworkOperation ()
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSURL *imageFileURL;
 @property (nonatomic, retain) NSString *tempFile;
 @property (nonatomic, copy) FKAPIImageUploadCompletion completion;
 @property (nonatomic, retain) NSDictionary *args;
@@ -24,10 +25,20 @@
 
 @implementation FKImageUploadNetworkOperation
 
-- (id) initWithImage:(UIImage *)image arguments:(NSDictionary *)args completion:(FKAPIImageUploadCompletion)completion; {
+- (id) initWithImage:(UIImage *)image arguments:(NSDictionary *)args completion:(FKAPIImageUploadCompletion)completion {
     self = [super init];
     if (self) {
 		self.image = image;
+		self.args = args;
+		self.completion = completion;
+    }
+    return self;
+}
+
+- (id) initWithImageFileURL:(NSURL *)url arguments:(NSDictionary *)args completion:(FKAPIImageUploadCompletion)completion {
+    self = [super init];
+    if (self) {
+		self.imageFileURL = url;
 		self.args = args;
 		self.completion = completion;
     }
@@ -111,8 +122,12 @@
     [outputStream open];
 	
 	// Input stream is the image
-	NSData *imgData = UIImageJPEGRepresentation(self.image, 1.0);
-	NSInputStream *inImageStream = [[NSInputStream alloc] initWithData:imgData];
+    NSInputStream *inImageStream = nil;
+    if (self.image) {
+        inImageStream = [[NSInputStream alloc] initWithData:UIImageJPEGRepresentation(self.image, 1.0)];
+    } else {
+        inImageStream = [[NSInputStream alloc] initWithURL:self.imageFileURL];
+    }
 	
 	// Write the contents to the streams... don't cross the streams !
 	[FKDUStreamUtil writeMultipartStartString:multipartOpeningString imageStream:inImageStream toOutputStream:outputStream closingString:multipartClosingString];

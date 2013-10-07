@@ -476,4 +476,10 @@
     return imageUpload;
 }
 
+- (FKImageUploadNetworkOperation *) uploadImageAtFileURL:(NSURL *)url args:(NSDictionary *)args completion:(FKAPIImageUploadCompletion)completion {
+    FKImageUploadNetworkOperation *imageUpload = [[FKImageUploadNetworkOperation alloc] initWithImageFileURL:url arguments:args completion:completion];
+	[[FKDUNetworkController sharedController] execute:imageUpload];
+    return imageUpload;
+}
+
 @end
