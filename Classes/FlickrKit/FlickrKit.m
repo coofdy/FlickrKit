@@ -176,7 +176,7 @@
 	perms = [NSString stringWithFormat:@"&perms=%@", permissionString];
     
 	///http://www.flickr.com/services/oauth/authorize
-    NSString *URLString = [NSString stringWithFormat:@"http://www.flickr.com/services/oauth/authorize?oauth_token=%@%@", inRequestToken, perms];
+    NSString *URLString = [NSString stringWithFormat:@"https://www.flickr.com/services/oauth/authorize?oauth_token=%@%@", inRequestToken, perms];
     return [NSURL URLWithString:URLString];
 }
 
@@ -200,7 +200,7 @@
 	
 	NSDictionary *paramsDictionary = @{@"oauth_callback": [url absoluteString]};
 	FKURLBuilder *urlBuilder = [[FKURLBuilder alloc] init];
-    NSURL *requestURL = [urlBuilder oauthURLFromBaseURL:[NSURL URLWithString:@"http://www.flickr.com/services/oauth/request_token"] method:FKHttpMethodGET params:paramsDictionary];
+    NSURL *requestURL = [urlBuilder oauthURLFromBaseURL:[NSURL URLWithString:@"https://www.flickr.com/services/oauth/request_token"] method:FKHttpMethodGET params:paramsDictionary];
 	
 	FKDUNetworkOperation *op = [[FKDUNetworkOperation alloc] initWithURL:requestURL];
 	[op sendAsyncRequestOnCompletion:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -264,7 +264,7 @@
     
 	NSDictionary *paramsDictionary = @{@"oauth_token": token, @"oauth_verifier": verifier};
 	FKURLBuilder *urlBuilder = [[FKURLBuilder alloc] init];
-    NSURL *requestURL = [urlBuilder oauthURLFromBaseURL:[NSURL URLWithString:@"http://www.flickr.com/services/oauth/access_token"] method:FKHttpMethodGET params:paramsDictionary];
+    NSURL *requestURL = [urlBuilder oauthURLFromBaseURL:[NSURL URLWithString:@"https://www.flickr.com/services/oauth/access_token"] method:FKHttpMethodGET params:paramsDictionary];
     
 	FKDUNetworkOperation *op = [[FKDUNetworkOperation alloc] initWithURL:requestURL];
 	[op sendAsyncRequestOnCompletion:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -413,7 +413,7 @@
 
 
 - (NSURL *) buddyIconURLForUser:(NSString *)userID {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"http://flickr.com/buddyicons/%@.jpg", userID]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://flickr.com/buddyicons/%@.jpg", userID]];
 }
 
 // Utility methods to extract the photoID/server/secret/farm from the input
@@ -442,9 +442,9 @@
     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstb].jpg
 	// http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}.jpg
     
-    static NSString *photoSource = @"http://static.flickr.com/";
+    static NSString *photoSource = @"static.flickr.com/";
 	
-	NSMutableString *URLString = [NSMutableString stringWithString:@"http://"];
+	NSMutableString *URLString = [NSMutableString stringWithString:@"https://"];
 	if ([farm length]) {
 		[URLString appendFormat:@"farm%@.", farm];
 	}
@@ -452,7 +452,7 @@
 	NSAssert([server length], @"Must have server attribute");
 	NSAssert([photoID length], @"Must have id attribute");
 	NSAssert([secret length], @"Must have secret attribute");
-	[URLString appendString:[photoSource substringFromIndex:7]];
+	[URLString appendString:photoSource];
 	[URLString appendFormat:@"%@/%@_%@", server, photoID, secret];
 	
 	NSString *sizeKey = FKIdentifierForSize(size);
