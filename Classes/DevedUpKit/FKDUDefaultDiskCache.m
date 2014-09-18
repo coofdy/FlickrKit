@@ -76,12 +76,16 @@
     }
 }
 
+- (NSString *)escapeKey:(NSString *)key {
+    return [key stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+}
+
 - (NSData *) dataForKey:(NSString *)key maxAgeMinutes:(FKDUMaxAge)maxAgeMinutes {
     if (0 == maxAgeMinutes) {
         return nil;
     }
     
-	NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:key];
+	NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:[self escapeKey:key]];
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:localPath]) {
 		NSError *error = nil;
@@ -107,7 +111,7 @@
 - (void) storeData:(NSData *)data forKey:(NSString *)key {
 	if (key != nil && data != nil) {
 
-		NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:key];
+		NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:[self escapeKey:key]];
 		
 		[[NSFileManager defaultManager] createFileAtPath:localPath 
 												contents:data 
@@ -124,7 +128,7 @@
 #pragma mark - Remove item (NSData) from cache
 
 - (void) removeDataForKey:(NSString *)key {
-    NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:key];
+    NSString *localPath = [[self cacheDir] stringByAppendingPathComponent:[self escapeKey:key]];
     [[NSFileManager defaultManager] removeItemAtPath:localPath
 											   error:nil];
 }
