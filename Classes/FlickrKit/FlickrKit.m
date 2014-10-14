@@ -442,7 +442,7 @@
     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstb].jpg
 	// http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}.jpg
     
-    static NSString *photoSource = @"static.flickr.com/";
+    static NSString *photoSource = @"staticflickr.com/";
 	
 	NSMutableString *URLString = [NSMutableString stringWithString:@"https://"];
 	if ([farm length]) {
@@ -456,7 +456,11 @@
 	[URLString appendFormat:@"%@/%@_%@", server, photoID, secret];
 	
 	NSString *sizeKey = FKIdentifierForSize(size);
-	[URLString appendFormat:@"_%@.jpg", sizeKey];
+    if (sizeKey.length > 0) {
+        [URLString appendFormat:@"_%@.jpg", sizeKey];
+    } else {
+        [URLString appendString:@".jpg"];
+    }
     
 	return [NSURL URLWithString:URLString];
 }
