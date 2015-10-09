@@ -13,12 +13,16 @@
 
 - (void) my_callBlock {
     void (^block)(void) = (id)self;
-    block();
+    if (self != nil) {
+        block();
+    }
 }
 
 - (void) my_callBlockWithObject:(id)obj {
     void (^block)(id obj) = (id)self;
-    block(obj);
+    if (self != nil) {
+        block(obj);
+    }
 }
 
 @end

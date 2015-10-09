@@ -67,7 +67,8 @@
 			return isConnected;
 		}
 		
-	}		
+        CFRelease(reachability);
+	}
 	return NO;
 }
 
