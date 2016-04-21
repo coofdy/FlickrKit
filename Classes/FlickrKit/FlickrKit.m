@@ -441,26 +441,18 @@
 - (NSURL *) photoURLForSize:(FKPhotoSize)size photoID:(NSString *)photoID server:(NSString *)server secret:(NSString *)secret farm:(NSString *)farm {
     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstb].jpg
 	// http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}.jpg
-    // http://c1.staticflickr.com/{farm-id}/{server-id}/{id}_{secret}.jpg
     
-    
-    
-    static NSString *photoSource = @".staticflickr.com/";
+    static NSString *photoSource = @"staticflickr.com/";
 	
 	NSMutableString *URLString = [NSMutableString stringWithString:@"https://"];
+	if ([farm length]) {
+		[URLString appendFormat:@"farm%@.", farm];
+	}
 	
 	NSAssert([server length], @"Must have server attribute");
 	NSAssert([photoID length], @"Must have id attribute");
 	NSAssert([secret length], @"Must have secret attribute");
-    NSInteger farmInt = [farm integerValue];
-    NSString *cHost = (farmInt % 2) ? @"c1" : @"c2";
-    [URLString appendString:cHost];
-    [URLString appendString:photoSource];
-    
-    if ([farm length]) {
-        [URLString appendFormat:@"%@/", farm];
-        farmInt = [farm integerValue];
-    }
+	[URLString appendString:photoSource];
 	[URLString appendFormat:@"%@/%@_%@", server, photoID, secret];
 	
 	NSString *sizeKey = FKIdentifierForSize(size);
