@@ -41,7 +41,7 @@
 	}
 	if(!self.description) {
 		valid = NO;
-		[errorDescription appendString:@"'description', "];
+		[errorDescription appendString:@"'descr', "];
 	}
 
 	if(error != NULL) {
@@ -61,8 +61,8 @@
 	if(self.title) {
 		[args setValue:self.title forKey:@"title"];
 	}
-	if(self.description) {
-		[args setValue:self.description forKey:@"description"];
+	if(self.descr) {
+		[args setValue:self.descr forKey:@"description"];
 	}
 
     return [args copy];

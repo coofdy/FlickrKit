@@ -216,7 +216,7 @@
 				if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
 					statusCode = ((NSHTTPURLResponse*)response).statusCode;
 				}
-				NSString* errorDescription = [NSString stringWithFormat:@"Unexpected response from server: %d", statusCode];
+				NSString* errorDescription = [NSString stringWithFormat:@"Unexpected response from server: %@", @(statusCode)];
 				NSDictionary *userInfo = @{NSLocalizedDescriptionKey: errorDescription};
 				NSError *error = [NSError errorWithDomain:FKFlickrKitErrorDomain code:FKErrorAuthenticating userInfo:userInfo];
 				if (completion) {
@@ -360,7 +360,7 @@
 			if (response) {
 				self.authToken = storedToken;
 				self.authSecret = storedSecret;
-				self.permissionGranted = storedPermission.integerValue;
+				self.permissionGranted = (FKPermission)storedPermission.integerValue;
 				
 				NSString *username = [response valueForKeyPath:@"oauth.user.username"];
 				NSString *userid = [response valueForKeyPath:@"oauth.user.nsid"];

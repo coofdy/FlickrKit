@@ -153,7 +153,7 @@
 		}
 		
 		self.cacheSize = totalSize;
-		NSLog(@"cache size is: %d", _cacheSize);
+		NSLog(@"cache size is: %@", @(_cacheSize));
 	}
 	return self.cacheSize;
 }
@@ -187,11 +187,11 @@ NSInteger FKDUdateModifiedSort(id file1, id file2, void *reverse) {
 - (NSString *) trimTheCache {
     NSAssert(![NSThread currentThread].isMainThread, @"should be in background");
 	NSUInteger targetBytes = self.maxDiskCacheSize * 0.75;
-	NSLog(@"Checking disk cache size. Limit %i bytes", targetBytes);
-	NSString *size = [NSString stringWithFormat:@"%i", [self currentSizeOfCache]];
+	NSLog(@"Checking disk cache size. Limit %@ bytes", @(targetBytes));
+	NSString *size = [NSString stringWithFormat:@"%@", @([self currentSizeOfCache])];
 	
 	if ([self currentSizeOfCache] > targetBytes) {
-		NSLog(@"Time to clean the cache! size is: %@, %d", [self cacheDir], [self currentSizeOfCache]);
+		NSLog(@"Time to clean the cache! size is: %@, %@", [self cacheDir], @([self currentSizeOfCache]));
 		NSError *error = nil;
 		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self cacheDir] error:&error];
 		if (!error) {
@@ -208,7 +208,7 @@ NSInteger FKDUdateModifiedSort(id file1, id file2, void *reverse) {
 				[[NSFileManager defaultManager] removeItemAtPath:[sortedDirContents lastObject] error:nil];
 				[sortedDirContents removeLastObject];
 			}
-			NSLog(@"Remaining cache size: %d, target size: %d", self.cacheSize, targetBytes);
+			NSLog(@"Remaining cache size: %@, target size: %@", @(self.cacheSize), @(targetBytes));
 		}
 	}
 	NSLog(@"Finished checking disk cache");    
