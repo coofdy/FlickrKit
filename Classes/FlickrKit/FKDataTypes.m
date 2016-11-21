@@ -29,28 +29,31 @@ NSString *FKPermissionStringForPermission(FKPermission permission) {
 }
 
 NSString *FKIdentifierForSize(FKPhotoSize size) {
-	static NSArray *identifiers = nil;
-	if (!identifiers) {
-        identifiers = @[@"",
-					   @"collectionIconLarge",
-					   @"buddyIcon",
-					   @"s",
-					   @"q",
-					   @"t",
-					   @"m",
-					   @"n",
-					   @"",
-					   @"z",
-					   @"c",
-					   @"b",
-					   @"h",
-					   @"k",
-					   @"o",
-					   @"",
-					   @"",
-					   @"",
-					   @"",
-					   @""]; 
-    }
+    static NSArray *identifiers = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!identifiers) {
+            identifiers = @[@"",
+                            @"collectionIconLarge",
+                            @"buddyIcon",
+                            @"s",
+                            @"q",
+                            @"t",
+                            @"m",
+                            @"n",
+                            @"",
+                            @"z",
+                            @"c",
+                            @"b",
+                            @"h",
+                            @"k",
+                            @"o",
+                            @"",
+                            @"",
+                            @"",
+                            @"",
+                            @""]; 
+        }
+    });
     return identifiers[size];
 }
