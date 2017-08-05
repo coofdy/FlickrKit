@@ -271,7 +271,7 @@
 		if (response && !error) {
 			
 			NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			response = [response stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			response = [response stringByRemovingPercentEncoding];
 			if ([response hasPrefix:@"oauth_problem="]) {
 				self.beginAuthURL = nil;
 				self.authorized = NO;
